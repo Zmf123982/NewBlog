@@ -7,22 +7,22 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
 public class TestCase {
-//    @Test
-//    public void test1(){
-//        ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-//        UserDao userDao = ac.getBean("userDao", UserDao.class);
-//        System.out.println(userDao.findAll());
-//    } @Test
-//    public void test2(){
-//        ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-//        UserDao userDao = ac.getBean("userDao", UserDao.class);
-//        System.out.println(userDao.findByName("zhouj"));
-//    }
-//    @Test
-//    public void test1(){
-//        ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-//        UserDao userDao= ac.getBean("userDao",UserDao.class);
-//        User user = new User();
-//        user.setCn_user_id(NoteUtil.createID());
-//    }
+    @Test
+    public void test1(){
+        ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+        UserDao userDao = ac.getBean("userDao", UserDao.class);
+        System.out.println(userDao.findAll());
+    } @Test
+    public void test2(){
+        ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+        UserDao userDao = ac.getBean("userDao", UserDao.class);
+        System.out.println(userDao.findByName("zhouj"));
+    }
+    @Test
+    public void test3(){
+        ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+        UserDao userDao= ac.getBean("userDao",UserDao.class);
+        User user = new User();
+        user.setCn_user_id(NoteUtil.createID());
+    }
 }

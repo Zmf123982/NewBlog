@@ -10,15 +10,16 @@
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/favico-72-precomposed.png">
         <link rel="apple-touch-icon-precomposed" href="ico/favico-57-precomposed.png">
         <link rel="shortcut icon" href="ico/favico.png">
-        <link rel="shortcut icon" href="ico/favico.ico">
         <link rel="stylesheet" href="styles/icon.css"/>
         <link rel="stylesheet" href="styles/main.css"/>
 		<!-- Google-Code代码高亮CSS -->
         <link rel="stylesheet" href="styles/prettify.css"/>
 		<!-- Ueditor编辑器CSS -->
 		<link href="styles/umeditor.min.css" type="text/css" rel="stylesheet">
-		
-   </head>
+		<script src="scripts/cookie_util.js"></script>
+		<script src="scripts/jquery.min.js"></script>
+
+	</head>
     <body class="animated fadeIn">
         <header class="header">
             <div class="header-brand">
@@ -290,15 +291,82 @@
 		</script>
 		
         <script type="text/javascript" src="scripts/jquery.min.js"></script>
-		<script type="text/javascript"src="scripts/basevalue.js"></script>
-		<script type="text/javascript" src="scripts/cookie_util.js"></script>
+		<script type="text/javascript" src="scripts/basevalue.js"></script>
+		<script type="text/javascript" src="scripts/alert.js"></script>
 		<script type="text/javascript" src="scripts/book.js"></script>
 		<script type="text/javascript" src="scripts/note.js"></script>
-		<script type="text/javascript" src="scripts/alert.js"></script>
-	
+		<script>
+
+			$(function () {
+				var keyword = "";//搜索关键字
+				var page = 1;//搜索页
+				//加载笔记本用户列表
+				loadUserBooks();
+				//给笔记本li元素绑定点击事件(动态绑定)
+				//$(selector).on(event,childSelector,data,functiom)
+				$("#book_ul").on("click","li",loadBookNotes);
+				//给笔记li元素绑定单击事件
+				$("#note_ul").on("click","li",loadNote);
+				//给保存笔记按钮帮点单击事件
+				$("#save_note").click(updateNote);
+				//关闭对话框(对所有的对话框都有用)
+				$("#can").on("click",".cancle,.close",closeAlertWindow);
+				//弹出创建笔记本对话框dialog模态窗
+				$("#add_notebook").click(alertAddBookWindow);
+				//给新建笔记本的创建按钮绑定单击事件
+				$("#can").on("click","#sure_addbook",addBook);
+				//弹出“创建笔记”对话框dialog模态框
+				$("#add_note").click(alertAddNoteWindow);
+				//给新建笔记的创建按钮绑定单击事件
+				$("#can").on("click","#sure_addnote",addNote);
+				//弹窗笔记菜单
+				$("#note_ul").on("click",".btn_slide_down",popNoteMenu);
+				$("body").click(hideNoteMenu);
+				//绑定笔记菜单中的删除按钮
+				$("#note_ul").on("click ",".btn_delete",alertDeleteNoteWindow);
+				//给删除笔记按钮绑定事间
+				$("#can").on("click","#sure_deletenote",deleteNote);
+				//个移动至按钮绑定单击事件
+				$("#note_ul").on("click ",".btn_move",alertMoveNoteWindow);
+				$("#can").on("click","#sure_movenote",moveNote);
+				$("#note_ul").on("click ",".btn_share",shareNote);
+				//双击修改绑定事件
+				$("#book_ul").on("dblclick","li",alertRenameBookWindow)
+				$("#can").on("click","#rename_btn",rename);
+				//搜索分享笔记，绑定enter
+				$("#search_note").keydown(function (event){
+					var code = event.keyCode;
+					if (code == 13){
+						//empty：清空子集
+						//清空搜索分享笔记列表
+						$("#pc_part_6 ul").empty();
+						//显示搜索笔记列表 隐藏其他笔记列表
+						$("#pc_part_2").hide();
+						$("#pc_part_6").show();
+						$("#pc_part_4").hide();
+						$("#pc_part_7").hide();
+						$("#pc_part_8").hide();
+						//按下回车键
+						keyword = $("#search_note").val().trim();
+						page = 1;
+						//搜索笔记的函数
+						searchSharePage(keyword,page);
+					}
+					//绑定搜索分享笔记li
+					$("#pc_part_6 ul").on("click","li",shareReveal);
+					//点击更多按钮
+					$("#more_note").click(function () {
+						page = page + 1;
+						//调用分页查询方法
+						searchSharePage(keyword,page);
+					})
+				});
+			});
+
+		</script>
 		<!-- Bootstrap框架JS -->
         <script src="scripts/bootstrap.min.js"></script>
-        <script src="scripts/js-prototype.js"></script>       
+        <script src="scripts/js-prototype.js"></script>
         <script src="scripts/theme-setup.js"></script>
 		<!-- Google-Code代码高亮JS -->
         <script class="re-execute" src="scripts/run_prettify.js"></script>
@@ -308,16 +376,15 @@
 		<script type="text/javascript" src="scripts/ue/lang/zh-cn.js"></script>
 		<script type="text/javascript">
 			//重写JS原生alert函数
-			
+
 				window.alert=function(e){
 					$('#can').load('./alert/alert_error.html',function(){
 						$('#error_info').text(' '+e);
 						$('.opacity_bg').show();
 					});
 				}
-			
 			//实例化Ueditor编辑器
 			var um = UM.getEditor('myEditor');
 		</script>
-	</body>		
+	</body>
 </html>
